@@ -9,7 +9,7 @@ from parse import parse_with_ollama
 import pandas as pd
 
 # Streamlit UI
-st.title("AI Web Scraper")
+st.title("Web Scraper")
 
 # Help section
 st.sidebar.header("Help")
