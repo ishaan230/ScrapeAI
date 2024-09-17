@@ -7,6 +7,7 @@ from scrape import (
 )
 from parse import parse_with_ollama
 import pandas as pd
+from gemini import bard
 
 # Streamlit UI
 st.title("Web Scraper")
@@ -63,6 +64,17 @@ if "dom_content" in st.session_state:
                     # Parse the content with Ollama
                     dom_chunks = split_dom_content(st.session_state.dom_content)
                     parsed_result = parse_with_ollama(dom_chunks, parse_description)
+                    st.write(parsed_result)
+                except Exception as e:
+                    st.error(f"An error occurred during parsing: {e}")
+
+    if st.button("Parse Content using Gemini"):
+        if parse_description:
+            with st.spinner("Parsing the content..."):
+                try:
+                    # Parse the content with Ollama
+                    dom_chunks = split_dom_content(st.session_state.dom_content)
+                    parsed_result = bard(dom_chunks,parse_description)
                     st.write(parsed_result)
                 except Exception as e:
                     st.error(f"An error occurred during parsing: {e}")

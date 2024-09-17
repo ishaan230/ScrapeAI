@@ -8,12 +8,12 @@ def scrape_website(website):
 
     with Firefox(options=options, service=FirefoxService()) as driver:
         driver.get(website)
-        
+
         driver.implicitly_wait(10)
 
         # Get the entire page source
         html = driver.page_source
-        
+
         return html
 
 def extract_body_content(html_content):
