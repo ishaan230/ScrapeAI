@@ -7,3 +7,6 @@ lxml
 html5lib
 python-dotenv
 google-generativeai
+webdriver-manager==4.0.0
+geckodriver-autoinstaller==0.1.0
+pyvirtualdisplay==3.0
