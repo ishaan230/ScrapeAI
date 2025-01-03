@@ -4,6 +4,8 @@ from scrape import (
     extract_body_content,
     clean_body_content,
     split_dom_content,
+    flipkartSearch,
+    amazonSearch
 )
 from parse import parse_with_ollama
 import pandas as pd
@@ -19,10 +21,10 @@ st.sidebar.text("2. Click 'Scrape Website' to get the content.")
 st.sidebar.text("3. Describe what you want to parse and click 'Parse Content'.")
 
 # User input
-url = st.text_input("Enter Website URL")
+urlQuery = st.text_input("Enter Query")
 
-#Scrape the Website
-if st.button("Scrape Website"):
+
+def scrapeFunction(url):
     if url:
         with st.spinner("Scraping the website..."):
             try:
@@ -42,6 +44,17 @@ if st.button("Scrape Website"):
             except Exception as e:
                 st.error(f"An error occurred during scraping: {e}")
 
+if st.button("Scrape Website [URL]"):
+    scrapeFunction(urlQuery)
+
+#Scrape the Website
+if st.button("Scrape Query using Flipkart "):
+    url = flipkartSearch(urlQuery)
+    scrapeFunction(url)
+
+if st.button("Scrape Query using Amazon "):
+    url = amazonSearch(urlQuery)
+    scrapeFunction(url)
 # Export DOM content to CSV
 if st.button("Export Content"):
     if "dom_content" in st.session_state:
@@ -65,6 +78,11 @@ if "dom_content" in st.session_state:
                     dom_chunks = split_dom_content(st.session_state.dom_content)
                     parsed_result = parse_with_ollama(dom_chunks, parse_description)
                     st.write(parsed_result)
+
+                    # Save parsed result to a file
+                    with open("parsed_result_ollama.txt", "w") as f:
+                        f.write(parsed_result)  
+                    st.success("Parsed result saved as parsed_result_ollama.txt.")
                 except Exception as e:
                     st.error(f"An error occurred during parsing: {e}")
 
@@ -76,5 +94,10 @@ if "dom_content" in st.session_state:
                     dom_chunks = split_dom_content(st.session_state.dom_content)
                     parsed_result = bard(dom_chunks,parse_description)
                     st.write(parsed_result)
+
+                    with open("parsed_result_gemini.txt", "w") as f:
+                        f.write(parsed_result)  
+                    st.success("Parsed result saved as parsed_result_gemini.txt.")
+                    
                 except Exception as e:
                     st.error(f"An error occurred during parsing: {e}")

@@ -1,6 +1,22 @@
 from selenium.webdriver import Firefox, FirefoxOptions
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from bs4 import BeautifulSoup
+import urllib.parse
+
+
+
+
+
+def flipkartSearch(query):
+    encoded_query = urllib.parse.quote(query)
+    url = f"https://www.flipkart.com/search?q={encoded_query}"
+    print(url)
+    return url
+
+def amazonSearch(query):
+    encoded_query = urllib.parse.quote(query)
+    url = f"https://www.amazon.in/s?k={encoded_query}"
+    return url
 
 def scrape_website(website):
     options = FirefoxOptions()
